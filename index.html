@@ -67,21 +67,21 @@
 <body><main>
 <div class="hero">
   <h1>Watch and island,<br>finished and stress-tested</h1>
-  <p class="sub">Real Apple Watch and iPhone, release build 1.0.12 (46) from main, live web lane. Three full workouts finished on the wrist, every sync direction timed, every Dynamic Island button pressed with the phone in the background. Two bugs found and fixed live. Apple Watch widgets added. Shipping as 1.0.13.</p>
+  <p class="sub">Real Apple Watch and iPhone, release build 1.0.12 (46) from main, live web lane. Three full workouts finished on the wrist, every sync direction timed, every Dynamic Island button pressed with the phone in the background. Four bugs found on device: three fixed and live, one being fixed. Apple Watch widgets added. Then a smoke test on the release build, 1.0.13, which is now in App Store review.</p>
   <div class="tiles">
     <div class="tile"><div class="big ok">12<small>/12</small></div><p>sets synced in the foreground pass, reps exact both ways</p></div>
     <div class="tile"><div class="big">~2<small> s</small></div><p>watch tick to phone (1.6–2.1 s, includes the read itself)</p></div>
     <div class="tile"><div class="big">2–4<small> s</small></div><p>phone tick to watch, typed reps carried over</p></div>
     <div class="tile"><div class="big ok">3<small>/3</small></div><p>island buttons worked from the home screen: Log set, +15 s, Skip rest</p></div>
     <div class="tile"><div class="big ok">3<small>/3</small></div><p>watch-finished workouts saved on the server with every set and the RPE</p></div>
-    <div class="tile"><div class="big warn">2</div><p>bugs found on device, both fixed and live</p></div>
+    <div class="tile"><div class="big warn">4</div><p>bugs found on device: 3 fixed and live, 1 being fixed</p></div>
   </div>
   <p class="stamp">7 October 2026 · Jordan Demo test client · iPhone 14 Pro (iOS 27) + Apple Watch Series 8 (watchOS 26.6)</p>
 </div>
 
 <section>
   <h2>Important: what clients have right now</h2>
-  <p class="lead">App Store 1.0.12 (build 47), live since yesterday, was cut by the Apple Health work from an older branch. It has the health features but <b>not</b> the full-height watch layout, the island buttons or the locked-phone sync fixes. Clients have the 4 October watch app. 1.0.13 is built from main, which has all of it plus the health work and the new widgets.</p>
+  <p class="lead">App Store 1.0.12 (build 47), live since yesterday, was cut by the Apple Health work from an older branch. It has the health features but <b>not</b> the full-height watch layout, the island buttons or the locked-phone sync fixes. Clients have the 4 October watch app. 1.0.13 is built from main, which has all of it plus the health work and the new widgets. <b>1.0.13 (build 49) is now in App Store review and releases automatically on approval.</b></p>
 </section>
 
 <section>
@@ -135,12 +135,27 @@
 </section>
 
 <section>
-  <h2>Two bugs found, fixed and live</h2>
+  <h2>1.0.13 on your devices</h2>
+  <p class="lead">The release build, 1.0.13, on your iPhone (build 49) and Apple Watch (build 48, same source). The workout stays alive when you leave it: the face shows the workout indicator beside the date, the Smart Stack's top card is JF Coach's running session, and opening it lands exactly where you were. I couldn't test the literal wrist raise, because the watch was on its charger (21%), where watchOS shows a charging clock that ignores taps.</p>
+  <div class="card"><div class="row w">
+    <figure><img src="img/real-face-session.jpg" alt=""><figcaption><b>Workout running</b>: the indicator by the date, and JF Coach's session card on top of the Smart Stack</figcaption></figure>
+    <figure><img src="img/w13-back.jpg" alt=""><figcaption><b>Back in</b>: same page, set 1 still logged</figcaption></figure>
+    <figure><img src="img/w13-rate.jpg" alt=""><figcaption><b>How hard?</b> 7 with the crown; the server saved RPE 7</figcaption></figure>
+    <figure><img src="img/w13-done.jpg" alt=""><figcaption><b>Workout 28 done</b>, 4 s after JF Coach opened</figcaption></figure>
+  </div></div>
+</section>
+
+<section>
+  <h2>Bugs found, fixed and live</h2>
   <div class="pair">
     <div class="card"><div class="label">Fixed · jf-app #510</div><h3>Training didn't show a watch-finished workout</h3><p class="lead">Home updated, but the kept-alive Training tab still said 3 of 4 and offered Start It Early until the app restarted. Training now refreshes like Home does. Verified on the phone: 5 of 6 straight away.</p>
       <div class="row i"><figure><img src="img/training-stale.jpg" alt="" style="width:170px"><figcaption>Before</figcaption></figure><figure><img src="img/training-fixed.jpg" alt="" style="width:170px"><figcaption>After, no restart</figcaption></figure></div></div>
     <div class="card"><div class="label">Fixed · jf-app #511</div><h3>Empty "Session" page after a watch finish</h3><p class="lead">The jump to the celebration was issued while the phone was hidden and got lost, so JF Coach opened on "Start a workout to log it here". It now opens the celebration on return, or "Full Body 3 is saved. Nice work." when the save waited for the app.</p>
       <div class="row i"><figure><img src="img/session-empty.jpg" alt="" style="width:170px"><figcaption>Before</figcaption></figure><figure><img src="img/session-saved.jpg" alt="" style="width:170px"><figcaption>After</figcaption></figure></div></div>
+  </div>
+  <div class="pair" style="margin-top:12px">
+    <div class="card"><div class="label">Fixed · jf-app #513</div><h3>"Tap Finish to try again" for a finish that was already safe</h3><p class="lead">With JF Coach in the background, a watch finish can't always reach the server. The phone queues it and sends it by itself the moment the app opens (4 s in the test), but the wrist said "Couldn't reach the server, tap Finish to try again". Now the watch keeps "Saving" and then says your iPhone will finish it.</p></div>
+    <div class="card"><div class="label">Being fixed</div><h3>A finished workout came back after a relaunch</h3><p class="lead">After that queued finish went through, closing and reopening JF Coach brought the finished session back as "still on the go", and the watch then ignored the next workout. The server was right all along (every workout saved once). Being fixed on the simulator rig.</p></div>
   </div>
 </section>
 
@@ -148,15 +163,19 @@
   <h2>New: JF Coach on the watch face</h2>
   <p class="lead">Complications for every watch face (circle, corner, inline, rectangle) and a Smart Stack card that rises to the top during a workout. The rest countdown ticks by itself.</p>
   <div class="card"><figure><img src="img/widgets-workout.jpg" alt="" style="width:100%;max-width:900px;background:#141414"><figcaption><b>During a workout</b>: live, resting, all sets logged</figcaption></figure></div>
+  <div class="card" style="margin-top:12px"><div class="row w">
+    <figure><img src="img/face-infograph.jpg" alt="" style="width:340px;border-radius:24px"><figcaption><b>On a real watch face</b> (Infograph, simulator): the corner reads "2 of 10 sets" and the sub-dial fills as you log</figcaption></figure>
+    <figure><img src="img/face-edit.jpg" alt="" style="width:340px;border-radius:24px"><figcaption><b>Picked from the face editor</b> like any Apple complication</figcaption></figure>
+  </div></div>
   <div class="card" style="margin-top:12px"><figure><img src="img/widgets-idle.jpg" alt="" style="width:100%;max-width:900px;background:#141414"><figcaption><b>Between workouts</b>: a launcher, or your last workout</figcaption></figure></div>
 </section>
 
 <section>
   <h2>What's live</h2>
   <div class="card"><ul class="list">
-    <li><div class="sq g">✓</div><div><h3>Web lane NIF0STEQ</h3><p>Both fixes are live for every client now (no app update needed). Rollback: e4WJwkeA.</p></div></li>
-    <li><div class="sq s">→</div><div><h3>JF Coach 1.0.13 from main</h3><p>The full-height watch, island buttons, locked-phone sync fixes, an hour-idle hold, the widgets and the health work. TestFlight first, then App Store review.</p></div></li>
-    <li><div class="sq b">i</div><div><h3>Wear OS</h3><p>Built and signed with the same features (4 Oct); it still needs uploading to Google Play's Wear track.</p></div></li>
+    <li><div class="sq g">✓</div><div><h3>Web lane ua10GvD_</h3><p>#510, #511 and #513 are live for every client now (no app update needed). Rollback: NIF0STEQ.</p></div></li>
+    <li><div class="sq s">→</div><div><h3>JF Coach 1.0.13 (49) in App Store review</h3><p>The full-height watch, island buttons, locked-phone sync fixes, an hour-idle hold, the widgets and the health work. Releases automatically once Apple approves it. On your phone and watch now through TestFlight.</p></div></li>
+    <li><div class="sq b">i</div><div><h3>Wear OS</h3><p>Built and signed with the same features (4 Oct); the upload to Google Play's Wear track is in progress in another thread.</p></div></li>
   </ul></div>
 </section>
 </main></body></html>
