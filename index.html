@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JF Coach watch + Dynamic Island · 7 Oct release report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #222326; --ink2: rgba(31,32,37,.60); --ink3: rgba(31,32,37,.38); --cap: #8A8F99;
+    --canvas: #F5F7FB; --card: #EBF0F8; --tile: #FFFFFF; --dark: #1F2025; --track: #E7EBF2; --hair: #ECEEF2;
+    --strain: #F5A524; --ok: #8BD42A; --ai: #8C7CF6; --info: #4DA3FF; --alert: #FF5E3A;
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--canvas); color: var(--ink); font: 500 16px/1.45 Inter, -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 16px 80px; }
+  h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.0; margin: 0; }
+  h1 { font-size: 44px; }
+  h2 { font-size: 30px; margin-bottom: 6px; }
+  h3 { font-size: 19px; letter-spacing: -0.02em; line-height: 1.15; }
+  p { margin: 0; }
+  .sub { color: var(--ink2); font-size: 17px; margin-top: 10px; max-width: 46em; }
+  .hero { padding: 26px 22px 24px; background: var(--tile); border-radius: 24px; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+  .stamp { color: var(--cap); font-size: 13px; margin-top: 14px; }
+  section { margin-top: 34px; }
+  .lead { color: var(--ink2); margin: 6px 0 14px; max-width: 46em; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 18px; }
+  .tile { background: var(--tile); border-radius: 16px; padding: 16px 16px 14px; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+  .big { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .big small { font-size: 18px; color: var(--ink3); font-weight: 600; letter-spacing: -0.01em; }
+  .tile p { color: var(--ink2); font-size: 14px; margin-top: 8px; }
+  .ok { color: #5f9a12; } .warn { color: #c77d00; }
+  .card { background: var(--tile); border-radius: 24px; padding: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+  .row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+  .row figure { flex: 0 0 auto; scroll-snap-align: start; }
+  figure { margin: 0; }
+  figure img { display: block; border-radius: 18px; background: #000; }
+  .w img { width: 168px; height: auto; border-radius: 34px; }
+  .i img { width: 360px; max-width: 82vw; height: auto; border-radius: 18px; }
+  figcaption { font-size: 13px; color: var(--ink2); margin-top: 8px; max-width: 360px; }
+  .w figcaption { max-width: 168px; }
+  figcaption b { color: var(--ink); font-weight: 600; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+  @media (max-width: 640px) { .pair { grid-template-columns: 1fr; } h1 { font-size: 36px; } }
+  .label { font-size: 12px; font-weight: 600; color: var(--cap); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  th { color: var(--cap); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  ul.list { margin: 0; padding: 0; list-style: none; }
+  ul.list li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hair); }
+  ul.list li:last-child { border-bottom: 0; }
+  .sq { flex: 0 0 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+  .sq.s { background: rgba(245,165,36,.13); color: var(--strain); }
+  .sq.g { background: rgba(139,212,42,.16); color: #5f9a12; }
+  .sq.a { background: rgba(255,94,58,.12); color: var(--alert); }
+  .sq.b { background: rgba(77,163,255,.13); color: var(--info); }
+  ul.list p { color: var(--ink2); font-size: 14px; margin-top: 2px; }
+  code { font: 500 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--card); padding: 1px 6px; border-radius: 6px; }
+  .reveal { opacity: 0; transform: translateY(28px); filter: blur(8px); transition: opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; filter: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; filter: none; transition: none; } }
+</style>
+</head>
+<body><main>
+<div class="hero">
+  <h1>Watch and island,<br>finished and stress-tested</h1>
+  <p class="sub">Real Apple Watch and iPhone, release build 1.0.12 (46) from main, live web lane. Three full workouts finished on the wrist, every sync direction timed, every Dynamic Island button pressed with the phone in the background. Two bugs found and fixed live. Apple Watch widgets added. Shipping as 1.0.13.</p>
+  <div class="tiles">
+    <div class="tile"><div class="big ok">12<small>/12</small></div><p>sets synced in the foreground pass, reps exact both ways</p></div>
+    <div class="tile"><div class="big">~2<small> s</small></div><p>watch tick to phone (1.6–2.1 s, includes the read itself)</p></div>
+    <div class="tile"><div class="big">2–4<small> s</small></div><p>phone tick to watch, typed reps carried over</p></div>
+    <div class="tile"><div class="big ok">3<small>/3</small></div><p>island buttons worked from the home screen: Log set, +15 s, Skip rest</p></div>
+    <div class="tile"><div class="big ok">3<small>/3</small></div><p>watch-finished workouts saved on the server with every set and the RPE</p></div>
+    <div class="tile"><div class="big warn">2</div><p>bugs found on device, both fixed and live</p></div>
+  </div>
+  <p class="stamp">7 October 2026 · Jordan Demo test client · iPhone 14 Pro (iOS 27) + Apple Watch Series 8 (watchOS 26.6)</p>
+</div>
+
+<section>
+  <h2>Important: what clients have right now</h2>
+  <p class="lead">App Store 1.0.12 (build 47), live since yesterday, was cut by the Apple Health work from an older branch. It has the health features but <b>not</b> the full-height watch layout, the island buttons or the locked-phone sync fixes. Clients have the 4 October watch app. 1.0.13 is built from main, which has all of it plus the health work and the new widgets.</p>
+</section>
+
+<section>
+  <h2>On your wrist</h2>
+  <p class="lead">Starting a workout on the phone opened it on the watch by itself. The watch uses the whole screen, heart rate shows beside "N of M", and a folded rest timer sits in the clock band.</p>
+  <div class="card"><div class="row w">
+    <figure><img src="img/watch-open.jpg" alt=""><figcaption><b>Opened by itself</b> on "1 of 6" after Start on the phone</figcaption></figure>
+    <figure><img src="img/watch-hr.jpg" alt=""><figcaption><b>Heart rate 66</b> beside the counter (was missing on 5 Oct)</figcaption></figure>
+    <figure><img src="img/watch-rest-band.jpg" alt=""><figcaption><b>Rest folded</b> into the clock band, 5 of 6</figcaption></figure>
+    <figure><img src="img/watch-rate.jpg" alt=""><figcaption><b>How hard?</b> The crown moved it to 7; the server saved RPE 7</figcaption></figure>
+    <figure><img src="img/watch-saving.jpg" alt=""><figcaption><b>Workout done</b>, saving while the phone was in the background</figcaption></figure>
+    <figure><img src="img/watch-24.jpg" alt=""><figcaption><b>Workout 24 done</b> once the phone confirmed</figcaption></figure>
+  </div></div>
+</section>
+
+<section>
+  <h2>Sync, timed</h2>
+  <p class="lead">Each figure is from the tap to the other device's first read, so it includes about 1.5 s for the read itself. Every value matched, including reps typed on one device and shown on the other.</p>
+  <div class="card"><table>
+    <tr><th>Direction</th><th>Exercise</th><th>Sets</th><th>Seen after</th></tr>
+    <tr><td>Watch → phone</td><td>Smith Machine Back Squat</td><td class="n">1, 2, 3</td><td class="n">2.1 · 2.0 · 1.9 s</td></tr>
+    <tr><td>Watch → phone</td><td>Machine Seated Chest Press</td><td class="n">1, 2, 3</td><td class="n">2.0 · 1.8 · 1.6 s</td></tr>
+    <tr><td>Phone → watch</td><td>Smith Machine Bent Over Row (9, 10, 11 reps)</td><td class="n">1, 2, 3</td><td class="n">≤15.7* · 2.9 · 3.7 s</td></tr>
+    <tr><td>Phone → watch</td><td>Machine Seated Shoulder Press (9, 10, 11 reps)</td><td class="n">1, 2, 3</td><td class="n">2.2 · 2.7 · 3.1 s</td></tr>
+    <tr><td>Phone → watch</td><td>Workout start (Full Body 2)</td><td class="n">–</td><td class="n">3.9 s</td></tr>
+  </table>
+  <p class="lead" style="margin-top:10px">*The first read on a dimmed watch is slow; the set was already there on that first read. Two misses during the run were my test harness tapping behind an overlay, not sync: both devices agreed each time.</p></div>
+</section>
+
+<section>
+  <h2>The island, with the phone in the background</h2>
+  <p class="lead">Pressed from the home screen, with JF Coach not in front. Each press reached the watch, and the island followed every watch tick.</p>
+  <div class="card"><div class="row i">
+    <figure><img src="img/isl-logset.jpg" alt=""><figcaption><b>Log set 2</b> pressed: the watch logged it within 5.1 s</figcaption></figure>
+    <figure><img src="img/isl-rest.jpg" alt=""><figcaption><b>Rest 1:19</b>, matching the watch's 1:26 a few seconds earlier; +15 s added 15 s on the watch</figcaption></figure>
+    <figure><img src="img/isl-logset3.jpg" alt=""><figcaption><b>Skip rest</b>: the watch's rest cleared in 3.3 s and the island offered Log set 3</figcaption></figure>
+    <figure><img src="img/isl-dip-rest.jpg" alt=""><figcaption><b>Watch tick → island</b>: on to the last exercise with its rest</figcaption></figure>
+    <figure><img src="img/isl-all-logged.jpg" alt=""><figcaption><b>All sets logged</b>, 18 of 18, ready to finish on the wrist</figcaption></figure>
+  </div></div>
+</section>
+
+<section>
+  <h2>Finishing on the wrist</h2>
+  <p class="lead">Three workouts finished on the watch with the phone in the background. All three are on the server as completed, with the same reps and RPE as the watch.</p>
+  <div class="card"><table>
+    <tr><th>Workout</th><th>Finished on watch</th><th>On the server</th><th>What happened</th></tr>
+    <tr><td>Full Body 1 (18 sets)</td><td class="n">11:21</td><td class="n">11:21:55</td><td>Saved with JF Coach never opened; RPE 7, every set exact</td></tr>
+    <tr><td>Full Body 2</td><td class="n">11:37:43</td><td class="n">11:38:45</td><td>Saved in the background; the watch's "finishes when your iPhone picks it up" note cleared by itself</td></tr>
+    <tr><td>Full Body 3</td><td class="n">11:48:33</td><td class="n">11:52:50</td><td>iOS gave the phone no background time this run, so it waited in the phone's queue and saved the moment JF Coach opened. Designed fallback, nothing lost</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2>Two bugs found, fixed and live</h2>
+  <div class="pair">
+    <div class="card"><div class="label">Fixed · jf-app #510</div><h3>Training didn't show a watch-finished workout</h3><p class="lead">Home updated, but the kept-alive Training tab still said 3 of 4 and offered Start It Early until the app restarted. Training now refreshes like Home does. Verified on the phone: 5 of 6 straight away.</p>
+      <div class="row i"><figure><img src="img/training-stale.jpg" alt="" style="width:170px"><figcaption>Before</figcaption></figure><figure><img src="img/training-fixed.jpg" alt="" style="width:170px"><figcaption>After, no restart</figcaption></figure></div></div>
+    <div class="card"><div class="label">Fixed · jf-app #511</div><h3>Empty "Session" page after a watch finish</h3><p class="lead">The jump to the celebration was issued while the phone was hidden and got lost, so JF Coach opened on "Start a workout to log it here". It now opens the celebration on return, or "Full Body 3 is saved. Nice work." when the save waited for the app.</p>
+      <div class="row i"><figure><img src="img/session-empty.jpg" alt="" style="width:170px"><figcaption>Before</figcaption></figure><figure><img src="img/session-saved.jpg" alt="" style="width:170px"><figcaption>After</figcaption></figure></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>New: JF Coach on the watch face</h2>
+  <p class="lead">Complications for every watch face (circle, corner, inline, rectangle) and a Smart Stack card that rises to the top during a workout. The rest countdown ticks by itself.</p>
+  <div class="card"><figure><img src="img/widgets-workout.jpg" alt="" style="width:100%;max-width:900px;background:#141414"><figcaption><b>During a workout</b>: live, resting, all sets logged</figcaption></figure></div>
+  <div class="card" style="margin-top:12px"><figure><img src="img/widgets-idle.jpg" alt="" style="width:100%;max-width:900px;background:#141414"><figcaption><b>Between workouts</b>: a launcher, or your last workout</figcaption></figure></div>
+</section>
+
+<section>
+  <h2>What's live</h2>
+  <div class="card"><ul class="list">
+    <li><div class="sq g">✓</div><div><h3>Web lane NIF0STEQ</h3><p>Both fixes are live for every client now (no app update needed). Rollback: e4WJwkeA.</p></div></li>
+    <li><div class="sq s">→</div><div><h3>JF Coach 1.0.13 from main</h3><p>The full-height watch, island buttons, locked-phone sync fixes, an hour-idle hold, the widgets and the health work. TestFlight first, then App Store review.</p></div></li>
+    <li><div class="sq b">i</div><div><h3>Wear OS</h3><p>Built and signed with the same features (4 Oct); it still needs uploading to Google Play's Wear track.</p></div></li>
+  </ul></div>
+</section>
+</main></body></html>
